@@ -1,4 +1,7 @@
-package gui;
+package sudoku;
+/**
+ * The main Sudoku program
+ */
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -11,19 +14,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class SudokuMain extends JFrame{
-    private static final long serialVersionUID = 1L;  
+    private static final long serialVersionUID = 1L;  // to prevent serial warning
     
-    private GameBoardPanel gameBoard=new GameBoardPanel();
+    // private variables
+    private GameBoardPanel gameBoard = new GameBoardPanel();
     private JComboBox<String> difficultyComboBox = new JComboBox<>();
-    private JButton btnNewGame=new JButton("New Game");
-    private JButton btnResetGame=new JButton("Reset Game");
-    private JButton btnExitGame=new JButton("Exit Game");
+    private JButton btnNewGame = new JButton("New Game");
+    private JButton btnResetGame = new JButton("Reset Game");
+    private JButton btnExitGame = new JButton("Exit");
     
+    // Constructor
     public SudokuMain(){
-        Container cp=getContentPane();
+        Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
         cp.add(gameBoard,BorderLayout.CENTER);
-        JPanel controlPanel = new JPanel(new FlowLayout()); // create a new JPanel for the button
+        JPanel controlPanel = new JPanel(new FlowLayout()); // create a menu bar
         cp.add(controlPanel, BorderLayout.SOUTH); // add the JPanel to the south of the content pane
         difficultyComboBox.addItem("Easy");
         difficultyComboBox.addItem("Intermediate");
@@ -37,14 +42,14 @@ public class SudokuMain extends JFrame{
         });
         btnResetGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	// 清空所有编辑框
+            	//resent game
             	
             	gameBoard.getPuzzle().reset(gameBoard);
             }
         });
         btnExitGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	//退出游戏
+            	//exit game
             	System.exit(0);
             }
         });
@@ -58,6 +63,8 @@ public class SudokuMain extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Sudoku");
         setVisible(true);
+        
+        
     }
     public static void main(String[] args) throws Exception {
         new SudokuMain();

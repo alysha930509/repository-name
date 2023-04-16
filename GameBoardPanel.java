@@ -1,4 +1,4 @@
-package gui;
+package sudoku;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,8 +26,8 @@ public class GameBoardPanel extends JPanel {
 
 	public Cell[][] cells = new Cell[GRID_SIZE + 1][GRID_SIZE + 1];
 
-	static Font GameFont = new Font("Microsoft YaHei", Font.BOLD, 32);
-	static Font ToolFont = new Font("Microsoft YaHei", Font.PLAIN, 20);
+	static Font GameFont = new Font("OCR A Extended", Font.BOLD, 32);
+	static Font ToolFont = new Font("OCR A Extended", Font.PLAIN, 20);
 
 	public Cell[][] getCells(){
 		return cells;
@@ -62,7 +62,7 @@ public class GameBoardPanel extends JPanel {
 			for (int col = 1; col <= SUBGRID_SIZE; col++) {
 				AreaBlocks areaBlocks = new AreaBlocks(row, col);
 				areaBlocks.setBackground(Color.gray);
-				areaBlocks.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+				areaBlocks.setBorder(BorderFactory.createLineBorder(Color.white, 2));
 				add(areaBlocks);
 			}
 		}
@@ -73,11 +73,15 @@ public class GameBoardPanel extends JPanel {
 //				super.add(cells[row][col]);
 //			}
 //		}
+		
+		// [TODO 3]
 		CellInputListener listener = new CellInputListener();
+		
+		// [TODO 4]
 		for (int row = 1; row <= GRID_SIZE; row++) {
 			for (int col = 1; col <= GRID_SIZE; col++) {
 				if (cells[row][col].isEditable()) {
-					cells[row][col].addActionListener(listener);
+					cells[row][col].addActionListener(listener);  // For all editable rows and cols
 				}
 			}
 		}
@@ -216,17 +220,26 @@ public class GameBoardPanel extends JPanel {
 		}
 	}
 
-	
+	// [TODO 2] Define a Listener Inner Class for all the editable Cells
 	private class CellInputListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+			// Get a reference of the JTextField that triggers this action event
 			Cell sourceCell = (Cell) e.getSource();
 
+			// Retrieve the int entered
 			int numberIn = Integer.parseInt(sourceCell.getText());
 
+			// For debugging
 			System.out.println("You entered " + numberIn);
 
+			
+			/*
+	          * [TODO 5] (later - after TODO 3 and 4)
+	          * Check the numberIn against sourceCell.number.
+	          * Update the cell status sourceCell.status,
+	          * and re-paint the cell via sourceCell.paint().
+	          */
 			if (numberIn == sourceCell.number) {
 				sourceCell.status = CellStatus.CORRECT_GUESS;
 			} else {
@@ -234,8 +247,14 @@ public class GameBoardPanel extends JPanel {
 			}
 			sourceCell.paint();
 
+			
+			/*
+	          * [TODO 6] (later)
+	          * Check if the player has solved the puzzle after this move,
+	          *   by calling isSolved(). Put up a congratulation JOptionPane, if so.
+	          */
 			if (puzzle.isSolved(cells)) {
-				JOptionPane.showMessageDialog(null, "Congratulations, you have solved the puzzle!");
+				JOptionPane.showMessageDialog(null, "Congratulation!");
 			}
 		}
 	}

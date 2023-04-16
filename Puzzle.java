@@ -1,16 +1,17 @@
-package gui;
-
+package sudoku;
+/**
+ * The Sudoku number puzzle to be solved
+ */
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-
-
 public class Puzzle {
-
+	// All variables have package access
+	// The numbers on the puzzle
 	Cell[][] results = new Cell[GameBoardPanel.GRID_SIZE + 1][GameBoardPanel.GRID_SIZE + 1];
-//	boolean[][] isGiven = new boolean[GameBoardPanel.GRID_SIZE + 1][GameBoardPanel.GRID_SIZE + 1];
-	ArrayList<Cell> emptys = new ArrayList<>(); // 空值集合
+    // boolean[][] isGiven = new boolean[GameBoardPanel.GRID_SIZE + 1][GameBoardPanel.GRID_SIZE + 1];
+	ArrayList<Cell> emptys = new ArrayList<>(); 
 	boolean hasAns;
 	
 	public Puzzle() {
@@ -85,27 +86,29 @@ public class Puzzle {
 		}
 	}
 	
-	// 随机生成题目，需要传入难度系数，即数独完成度
+	// generate the sudoku, percent is the percentage completed 
 	public void next(double percent, Cell[][] cells) {
         Random rnd = new Random();
         rnd.setSeed(System.currentTimeMillis());
         if (percent > 1 || percent < 0) {
             percent = 0.36;
         }
-        // 确定需要填写数独的个数
+        // number of cell to fill in
         int cnt = (int) Math.ceil(percent * GameBoardPanel.GRID_SIZE * GameBoardPanel.GRID_SIZE);
-        // 确保是有解的方案
+        // make sure there's a solution
         do {
-        	// 初始化变量
+        	// initial 
             init();
             copyof(cells, results);
-            // 执行次数为空格子数量，now为当前填写的次数，cnt为需要填写数据的个数
+            //The number of execution times is the number of blank boxes
+            //now is the number of times to fill in currently
+            //cnt is the number of data to be filled in
             for (int now = 0; now < cnt; now++) {
-            	//随机生成空格坐标
+            	//Randomly generate space coordinates
                 int row = rnd.nextInt(GameBoardPanel.GRID_SIZE) + 1;
                 int col = rnd.nextInt(GameBoardPanel.GRID_SIZE) + 1;
                 int times = 0;
-                // 如果生成的随机坐标对应的棋盘为空
+                // if is empty 
                 if (results[row][col] == null || results[row][col].number == 0) {
                     do {
                     	results[row][col].number = rnd.nextInt(9) + 1;
@@ -124,17 +127,10 @@ public class Puzzle {
                     now--;
                 }
             }
-         
-       
-//            System.out.println("原始矩阵");
-//            print(results);
             setHasAns(results);
-//            System.out.println("答案矩阵");
-//            print(results);
-//            System.out.println("是否有解" + hasAns);
         } while (hasAns == false);
         // consoleOut();
-      System.out.println("答案矩阵");
+      System.out.println("Answer");
       print(results);
     }
 	
@@ -234,7 +230,7 @@ public class Puzzle {
         return true;
     }
     
-    // Rule for checking if a number is valid for the specific Cell
+    // Checking if a number is valid for the specific Cell
  	public boolean numIsValid(int numberIsValid, int numbers[][]) {
 
  		for (int row = 1; row <= GameBoardPanel.GRID_SIZE; row++) {
@@ -255,7 +251,5 @@ public class Puzzle {
 	public boolean generateRandomIsGiven() {
 		Random rd = new Random();
 		return rd.nextBoolean();
-	}
-
-	
+	}	
 }
